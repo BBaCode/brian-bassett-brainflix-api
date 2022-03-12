@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const videoInfo = require("../data/videoInfo.json");
 const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
 
@@ -16,6 +15,7 @@ function writeVideo(newVideo) {
 }
 
 router.get("/", (req, res) => {
+  const videoInfo = readVideos();
   const videoList = videoInfo.map((video) => {
     return {
       id: video.id,
@@ -28,6 +28,7 @@ router.get("/", (req, res) => {
 });
 
 router.get("/:videoId", (req, res) => {
+  const videoInfo = readVideos();
   const videoByID = videoInfo.find((video) => video.id === req.params.videoId);
   if (!videoByID) {
     return res.status(404).send("Video does not exist");
